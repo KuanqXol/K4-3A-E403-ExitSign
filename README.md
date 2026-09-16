@@ -5,14 +5,14 @@
 
 ## 👥 Thành viên nhóm & Phân công vai trò
 
-**Lớp:** 3A · **Phòng:** ____ · **Cụm:** ____ · **Track:** ____
+**Lớp:** 3A · **Phòng:** E403 · **Cụm:** 01 · **Track:** D
 
 | Họ và Tên | Mã Học Viên | Vai trò chính | Phần việc đảm nhiệm trong dự án |
 |---|---|---|---|
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
+|Đàm Quang Sơn  |2A202602868  |Nhóm trưởng |  |
+|Trần Hồng Sơn  |2A202602475  |Thành viên  |  |
+|Đinh Đức Thái  |2A202602648  |Thành viên  |  |
+|Bùi Tùng Dương |2A202602775  |Thành viên  |  |
 
 > Nhóm copy nguyên file README này về repo của mình, rồi điền bảng trên. Cột **Phần việc đảm nhiệm** ghi càng cụ thể càng tốt.
 
