@@ -8,6 +8,9 @@
     "start": "next start --hostname 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "test": "playwright test",
+    "test:engine": "node --test \"engine/__tests__/*.test.ts\"",
+    "eval": "node scripts/run-eval.ts",
+    "turn": "node scripts/demo-turn.ts",
     "format": "prettier --write app lib tests *.ts *.json *.mjs README.md"
   },
   "dependencies": {

@@ -4,4 +4,7 @@ node_modules/
 test-results/
 playwright-report/
 .env*
+!.env.example
 .npm-cache/
+# LLM prompt/response logs contain transcript excerpts from the private data pack
+logs/
