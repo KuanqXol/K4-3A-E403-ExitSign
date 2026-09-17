@@ -9,10 +9,10 @@
 
 | Họ và Tên | Mã Học Viên | Vai trò chính | Phần việc đảm nhiệm trong dự án |
 |---|---|---|---|
-|Đàm Quang Sơn  |2A202602868  |Nhóm trưởng |  |
-|Trần Hồng Sơn  |2A202602475  |Thành viên  |  |
-|Đinh Đức Thái  |2A202602648  |Thành viên  |  |
-|Bùi Tùng Dương |2A202602775  |Thành viên  |  |
+| Đàm Quang Sơn | 2A202602868 | Nhóm trưởng / System Architect | Quản trị tiến độ chung; thiết kế kiến trúc hệ thống, hoàn thiện tài liệu đặc tả `spec.md`, quy trình pipeline 11 bước `workflow.md`, đóng băng tiêu chuẩn nghiệm thu và công thức Quality Bar định lượng cho CP4. |
+| Trần Hồng Sơn | 2A202602475 | AI Core / Eval Engineer | Phát triển lõi AI và chính sách sư phạm thích ứng (`adaptive-policy.ts`, `engine.ts`); xây dựng bộ 4 chốt `validator.ts`, bộ lọc an toàn `guard.ts`; tạo bộ 20 ca kiểm thử `eval/golden_set.json`, script đo kiểm `run-eval.ts` và báo cáo phân tích lỗi `eval/run_results.md`. |
+| Đinh Đức Thái | 2A202602648 | Prompt & Knowledge Engineer | Thiết kế và tối ưu Prompt phân tích lượt học (Analyzer) & Prompt sinh câu hỏi (Generator) tại `prompts.ts`; xây dựng bản đồ khái niệm (concept map), trích xuất và ánh xạ transcript bài giảng (`knowledge.ts`, `content-analyzer.ts`); kiểm soát chống lộ đáp án và chống hallucination. |
+| Bùi Tùng Dương | 2A202602775 | Frontend & User Researcher | Phát triển giao diện bài giảng tương tác và trợ lý Socratic tại `app/tutor/page.tsx` & `live-timeline.tsx`; thực hiện khảo sát 15 sinh viên VinUni; quay video demo kịch bản thao tác CP3/CP5 và trực tiếp điều phối kế hoạch kiểm thử thực tế với 2 willing users. |
 
 > Nhóm copy nguyên file README này về repo của mình, rồi điền bảng trên. Cột **Phần việc đảm nhiệm** ghi càng cụ thể càng tốt.
 

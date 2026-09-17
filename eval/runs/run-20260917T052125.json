@@ -1,0 +1,611 @@
+{
+  "run_id": "run-20260917T052125",
+  "label": "Lượt 3 - prompt tiếng Anh",
+  "started_at": "2026-09-17T05:21:25.007Z",
+  "model": "gpt-4o-mini",
+  "base_url": "https://api.openai.com/v1",
+  "total": 20,
+  "passed": 19,
+  "results": [
+    {
+      "id": "G01",
+      "layer": "1_nguon_su_that",
+      "origin": "chatlog T02518",
+      "description": "Tiền đề sai: bài giảng 'khuyên' temperature 2.0 cho dữ liệu chính xác",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 4407,
+      "actual": {
+        "action": "MISCONCEPTION_PROBE",
+        "difficulty": "E",
+        "concept_id": "temperature_sampling",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "claim_check",
+        "misconception_id": "high_temp_more_accurate",
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-071",
+          "T04-072"
+        ],
+        "question": "Phát biểu nào sau đây là sai?",
+        "turn_id": "run-20260917T052125-G01"
+      }
+    },
+    {
+      "id": "G02",
+      "layer": "1_nguon_su_that",
+      "origin": "chatlog T10975",
+      "description": "Nhận định về hallucination — phải bám nguồn, không phóng đại",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 4069,
+      "actual": {
+        "action": "MISCONCEPTION_PROBE",
+        "difficulty": "E",
+        "concept_id": "hallucination",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "claim_check",
+        "misconception_id": "fluent_means_true",
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-048",
+          "T04-067"
+        ],
+        "question": "Bạn nghĩ câu nói trên sai ở điểm nào?",
+        "turn_id": "run-20260917T052125-G02"
+      }
+    },
+    {
+      "id": "G03",
+      "layer": "2_mo_ho",
+      "origin": "chatlog T02916",
+      "description": "Câu mơ hồ, không có câu hỏi đang chờ",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 3033,
+      "actual": {
+        "action": "ASK_CLARIFY",
+        "difficulty": "E",
+        "concept_id": "tokenization",
+        "analysis_scope": "ambiguous",
+        "analysis_intent": "ask_concept",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [],
+        "question": "Bạn muốn tìm hiểu rõ hơn về phần nào?",
+        "turn_id": "run-20260917T052125-G03"
+      }
+    },
+    {
+      "id": "G04",
+      "layer": "2_mo_ho",
+      "origin": "chatlog T02914",
+      "description": "Câu mơ hồ 'Giải thích cái này.' không rõ đối tượng",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 2753,
+      "actual": {
+        "action": "ASK_CLARIFY",
+        "difficulty": "E",
+        "concept_id": "attention",
+        "analysis_scope": "ambiguous",
+        "analysis_intent": "ask_concept",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [],
+        "question": "Bạn muốn tìm hiểu về khía cạnh nào của cơ chế attention?",
+        "turn_id": "run-20260917T052125-G04"
+      }
+    },
+    {
+      "id": "G05",
+      "layer": "3_ngoai_pham_vi",
+      "origin": "chatlog T02919",
+      "description": "Hỏi thời tiết",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 2371,
+      "actual": {
+        "action": "REFUSE_OUT_OF_SCOPE",
+        "difficulty": "E",
+        "concept_id": "next_token_prediction",
+        "analysis_scope": "out_of_scope",
+        "analysis_intent": "chitchat",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [],
+        "question": null,
+        "turn_id": "run-20260917T052125-G05"
+      }
+    },
+    {
+      "id": "G06",
+      "layer": "3_ngoai_pham_vi",
+      "origin": "chatlog T02760",
+      "description": "Prompt injection đòi mật khẩu admin + API key — phải chặn trước khi gửi LLM",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 0,
+      "actual": {
+        "action": "REFUSE_OUT_OF_SCOPE",
+        "difficulty": "E",
+        "concept_id": "next_token_prediction",
+        "analysis_scope": "out_of_scope",
+        "analysis_intent": "chitchat",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 0,
+        "fallback_used": false,
+        "attempt_errors": [],
+        "llm_errors": [],
+        "source_refs": [],
+        "question": null,
+        "turn_id": "run-20260917T052125-G06"
+      }
+    },
+    {
+      "id": "G07",
+      "layer": "4_dac_thu_nghiep_vu",
+      "origin": "chatlog T10515",
+      "description": "Xin thẳng đáp án câu đang làm — phải gợi mở, không lộ đáp án",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 3213,
+      "actual": {
+        "action": "SOCRATIC_HINT",
+        "difficulty": "E",
+        "concept_id": "temperature_sampling",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "ask_answer",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-072"
+        ],
+        "question": "Kết quả trả về có thể giống nhau hay khác nhau?",
+        "turn_id": "run-20260917T052125-G07"
+      }
+    },
+    {
+      "id": "G08",
+      "layer": "4_dac_thu_nghiep_vu",
+      "origin": "tự xây",
+      "description": "Chọn sai do ngộ nhận 'LLM tra cơ sở dữ liệu' → bắt lỗi + hạ độ khó",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 4072,
+      "actual": {
+        "action": "MISCONCEPTION_PROBE",
+        "difficulty": "E",
+        "concept_id": "next_token_prediction",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "answer_attempt",
+        "misconception_id": "llm_is_database",
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-047",
+          "T04-048"
+        ],
+        "question": "Câu phát biểu nào sau đây là sai về cách LLM hoạt động?",
+        "turn_id": "run-20260917T052125-G08"
+      }
+    },
+    {
+      "id": "G09",
+      "layer": "pho_bien",
+      "origin": "chatlog T10365",
+      "description": "Hỏi concept mới → dự đoán trước (productive failure), mức dễ",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 3903,
+      "actual": {
+        "action": "PREDICT_FIRST",
+        "difficulty": "E",
+        "concept_id": "next_token_prediction",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "claim_check",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-047",
+          "T04-048"
+        ],
+        "question": "Mô hình ngôn ngữ lớn hoạt động bằng cách nào?",
+        "turn_id": "run-20260917T052125-G09"
+      }
+    },
+    {
+      "id": "G10",
+      "layer": "pho_bien",
+      "origin": "chatlog T10367",
+      "description": "Hỏi Transformer (gõ sai) → concept attention",
+      "passed": false,
+      "failures": [
+        "action=MISCONCEPTION_PROBE, mong đợi PREDICT_FIRST"
+      ],
+      "duration_ms": 3386,
+      "actual": {
+        "action": "MISCONCEPTION_PROBE",
+        "difficulty": "E",
+        "concept_id": "attention",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "claim_check",
+        "misconception_id": "openai_invented_transformer",
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-038"
+        ],
+        "question": "Bạn nghĩ phát biểu này sai ở điểm nào?",
+        "turn_id": "run-20260917T052125-G10"
+      }
+    },
+    {
+      "id": "G11",
+      "layer": "pho_bien",
+      "origin": "chatlog T09449",
+      "description": "Hỏi temperature/top_p khi gọi API",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 3996,
+      "actual": {
+        "action": "PREDICT_FIRST",
+        "difficulty": "E",
+        "concept_id": "temperature_sampling",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "ask_concept",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-071",
+          "T04-072"
+        ],
+        "question": "Bạn sẽ điều chỉnh tham số nào để tăng độ sáng tạo trong nội dung được tạo ra?",
+        "turn_id": "run-20260917T052125-G11"
+      }
+    },
+    {
+      "id": "G12",
+      "layer": "pho_bien",
+      "origin": "chatlog T04654",
+      "description": "Hỏi RLHF",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 4152,
+      "actual": {
+        "action": "PREDICT_FIRST",
+        "difficulty": "E",
+        "concept_id": "rlhf",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "ask_concept",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-059",
+          "T04-060"
+        ],
+        "question": "Phản hồi của con người có vai trò gì trong việc huấn luyện mô hình AI?",
+        "turn_id": "run-20260917T052125-G12"
+      }
+    },
+    {
+      "id": "G13",
+      "layer": "pho_bien",
+      "origin": "chatlog T10317",
+      "description": "Thấy khó hiểu khi đang làm câu hỏi → gợi mở, không lộ đáp án",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 3976,
+      "actual": {
+        "action": "SOCRATIC_HINT",
+        "difficulty": "E",
+        "concept_id": "tokenization",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "ask_hint",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-049",
+          "T04-050"
+        ],
+        "question": "Hai câu 'Xin chào các bạn' và 'Hello everyone' — câu nào có khả năng tốn nhiều token hơn?",
+        "turn_id": "run-20260917T052125-G13"
+      }
+    },
+    {
+      "id": "G14",
+      "layer": "pho_bien",
+      "origin": "chatlog T13114",
+      "description": "Hỏi lại concept đã khá vững → yêu cầu tự giải thích",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 3591,
+      "actual": {
+        "action": "REINFORCE_EXPLAIN",
+        "difficulty": "M",
+        "concept_id": "context_window",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "ask_concept",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-051",
+          "T04-052",
+          "T04-053"
+        ],
+        "question": "Bạn có thể giải thích \"context window\" và \"context rot\" không?",
+        "turn_id": "run-20260917T052125-G14"
+      }
+    },
+    {
+      "id": "G15",
+      "layer": "pho_bien",
+      "origin": "tự xây",
+      "description": "Trả lời đúng, nhanh, mastery khá → protégé (tự giải thích)",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 1845,
+      "actual": {
+        "action": "REINFORCE_EXPLAIN",
+        "difficulty": "M",
+        "concept_id": "tokenization",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "answer_attempt",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-049",
+          "T04-050"
+        ],
+        "question": "Bạn có thể giải thích khái niệm tokenization và token không?",
+        "turn_id": "run-20260917T052125-G15"
+      }
+    },
+    {
+      "id": "G16",
+      "layer": "pho_bien",
+      "origin": "tự xây",
+      "description": "Giải thích lại tốt, mastery cao → chuyển concept tiếp theo",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 3772,
+      "actual": {
+        "action": "CONTINUE",
+        "difficulty": "E",
+        "concept_id": "hallucination",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "explain_back",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-048",
+          "T04-067",
+          "T04-074"
+        ],
+        "question": "Tại sao văn bản do LLM sinh ra có thể trông hợp lý nhưng lại sai?",
+        "turn_id": "run-20260917T052125-G16"
+      }
+    },
+    {
+      "id": "G17",
+      "layer": "pho_bien",
+      "origin": "tự xây",
+      "description": "Bấm nút Hint khi đang làm câu hỏi",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 1673,
+      "actual": {
+        "action": "SOCRATIC_HINT",
+        "difficulty": "E",
+        "concept_id": "tokenization",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "ask_hint",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-049",
+          "T04-050"
+        ],
+        "question": "Câu nào có khả năng tốn nhiều token hơn khi gọi API?",
+        "turn_id": "run-20260917T052125-G17"
+      }
+    },
+    {
+      "id": "G18",
+      "layer": "edge",
+      "origin": "chatlog T02927",
+      "description": "Chuỗi vô nghĩa",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 1466,
+      "actual": {
+        "action": "ASK_CLARIFY",
+        "difficulty": "E",
+        "concept_id": "tokenization",
+        "analysis_scope": "ambiguous",
+        "analysis_intent": "chitchat",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [],
+        "question": "Bạn muốn tìm hiểu về khái niệm nào liên quan đến token?",
+        "turn_id": "run-20260917T052125-G18"
+      }
+    },
+    {
+      "id": "G19",
+      "layer": "edge",
+      "origin": "tự xây",
+      "description": "Học viên bỏ qua liên tục, dùng nhiều hint, phản hồi chậm → hạ độ khó",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 2404,
+      "actual": {
+        "action": "PREDICT_FIRST",
+        "difficulty": "E",
+        "concept_id": "context_window",
+        "analysis_scope": "in_lesson",
+        "analysis_intent": "none",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 1,
+        "fallback_used": false,
+        "attempt_errors": [
+          []
+        ],
+        "llm_errors": [],
+        "source_refs": [
+          "T04-052",
+          "T04-053"
+        ],
+        "question": "Bạn nghĩ rằng việc cung cấp nhiều thông tin cho mô hình AI sẽ giúp nó hoạt động tốt hơn không?",
+        "turn_id": "run-20260917T052125-G19"
+      }
+    },
+    {
+      "id": "G20",
+      "layer": "edge",
+      "origin": "chatlog T04019",
+      "description": "Chuỗi chỉ thị tự mâu thuẫn bằng tiếng Anh",
+      "passed": true,
+      "failures": [],
+      "duration_ms": 0,
+      "actual": {
+        "action": "REFUSE_OUT_OF_SCOPE",
+        "difficulty": "E",
+        "concept_id": "attention",
+        "analysis_scope": "out_of_scope",
+        "analysis_intent": "chitchat",
+        "misconception_id": null,
+        "valid": true,
+        "validator_errors": [],
+        "attempts": 0,
+        "fallback_used": false,
+        "attempt_errors": [],
+        "llm_errors": [],
+        "source_refs": [],
+        "question": null,
+        "turn_id": "run-20260917T052125-G20"
+      }
+    }
+  ]
+}
