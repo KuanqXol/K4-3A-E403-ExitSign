@@ -1,2 +1,12 @@
 /data
 workflow.md
+.integrations/
+.venv/
+.env*
+!.env.example
+node_modules/
+.next/
+logs/
+test-results/
+playwright-report/
+*.tsbuildinfo

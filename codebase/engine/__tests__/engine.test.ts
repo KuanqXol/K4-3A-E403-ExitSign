@@ -299,6 +299,9 @@ describe("realtime view", () => {
     assert.equal(redactRawResponse('{"correct_option_index": 2, "rubric": ["bí mật"]}'), '{"correct_option_index": "•••", "rubric": ["•••"]}');
     assert.equal(redactRawResponse('{"rubric": ["đang sinh'), '{"rubric": ["•••"');
     assert.equal(redactRawResponse('{"correct_option_index": '), '{"correct_option_index": ');
+    assert.match(redactRawResponse('{"message": "Correct answer is B"}'), /\[đáp án: •••\]/);
+    assert.match(redactRawResponse('{"message": "Đáp án đúng là A"}'), /\[đáp án: •••\]/);
+    assert.doesNotMatch(redactRawResponse('{"message": "Vì sao chọn đáp án này?"}', TOKEN_PENDING), /token không phải một từ/);
   });
 
   it("phát sự kiện theo thứ tự và stream phản hồi đã che", async () => {

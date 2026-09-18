@@ -109,7 +109,7 @@ export function normalizeAnalysis(a: Analysis, pending: PendingInteraction | nul
   return notes.length ? { ...next, reason: `${next.reason} [rule: ${notes.join("; ")}]` } : next;
 }
 
-async function callLlm(deps: EngineDeps, logger: LlmCallLogger, stage: string, prompt: ChatMessage[]) {
+async function callLlm(deps: EngineDeps, logger: LlmCallLogger, stage: string, prompt: ChatMessage[], pending?: PendingInteraction | null) {
   const emit = deps.onEvent;
   const callId = `${logger.turnId}:${stage}`;
   const started = Date.now();
@@ -118,13 +118,13 @@ async function callLlm(deps: EngineDeps, logger: LlmCallLogger, stage: string, p
   const onDelta = emit
     ? (delta: string) => {
         streamed += delta;
-        emit({ type: "llm_text", call_id: callId, text: redactRawResponse(streamed) });
+        emit({ type: "llm_text", call_id: callId, text: redactRawResponse(streamed, pending) });
       }
     : undefined;
   try {
     const res = await deps.llm.completeJson(prompt, stage, onDelta);
     logger.log({ stage, model_name: res.model, latency_ms: res.latency_ms, raw_prompt: prompt, raw_response: res.content, usage: res.usage });
-    emit?.({ type: "llm_text", call_id: callId, text: redactRawResponse(res.content) });
+    emit?.({ type: "llm_text", call_id: callId, text: redactRawResponse(res.content, pending) });
     emit?.({ type: "llm_end", call_id: callId, latency_ms: res.latency_ms });
     return res.content;
   } catch (err) {
@@ -204,7 +204,7 @@ async function generate(input: TurnInput, decision: Decision, analysis: Analysis
       message: input.learner_message, pending: input.pending_interaction, previousErrors,
     });
     try {
-      const raw = parseJsonObject(await callLlm(deps, logger, `generate#${attempt}`, prompt));
+      const raw = parseJsonObject(await callLlm(deps, logger, `generate#${attempt}`, prompt, input.pending_interaction));
       const { interaction, schemaErrors } = toInteraction(raw);
       const validation = validateInteraction(
         decision, concept, lessonRefs, interaction, pending, schemaErrors, input.pending_interaction ?? null,

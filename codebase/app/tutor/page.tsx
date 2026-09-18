@@ -294,10 +294,12 @@ export default function TutorPage() {
   }, [turn?.turn_id]);
 
   async function send(payload: Payload) {
+    const isAnswering = payload.action === "answer" || payload.action === "ask_hint" || payload.action === "explain" || payload.action === "retry";
+    const targetConcept = isAnswering ? (turn?.decision?.concept_id ?? currentSlide.conceptId) : currentSlide.conceptId;
     const body = {
       ...payload,
       session_id: turn?.session_id,
-      concept_id: currentSlide.conceptId,
+      concept_id: targetConcept,
       response_time_ms: Date.now() - shownAt.current,
     };
     setLoading(true);
@@ -846,17 +848,17 @@ export default function TutorPage() {
                     Validator Guardrails:
                   </span>
                   <div className="grid grid-cols-2 gap-1.5 text-[11px] font-semibold">
-                    <span className="flex items-center gap-1 text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" /> Schema JSON
+                    <span className={`flex items-center gap-1 ${turn.checks.schema_valid ? "text-emerald-600" : "text-rose-600"}`}>
+                      {turn.checks.schema_valid ? <CheckCircle2 className="h-3.5 w-3.5" /> : <AlertCircle className="h-3.5 w-3.5" />} Schema JSON
                     </span>
-                    <span className="flex items-center gap-1 text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" /> Đáp án logic
+                    <span className={`flex items-center gap-1 ${turn.checks.answer_valid ? "text-emerald-600" : "text-rose-600"}`}>
+                      {turn.checks.answer_valid ? <CheckCircle2 className="h-3.5 w-3.5" /> : <AlertCircle className="h-3.5 w-3.5" />} Đáp án logic
                     </span>
-                    <span className="flex items-center gap-1 text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" /> Bám transcript
+                    <span className={`flex items-center gap-1 ${turn.checks.grounded_in_lesson ? "text-emerald-600" : "text-rose-600"}`}>
+                      {turn.checks.grounded_in_lesson ? <CheckCircle2 className="h-3.5 w-3.5" /> : <AlertCircle className="h-3.5 w-3.5" />} Bám transcript
                     </span>
-                    <span className="flex items-center gap-1 text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" /> Không lộ đáp án
+                    <span className={`flex items-center gap-1 ${turn.checks.no_answer_leak ? "text-emerald-600" : "text-rose-600"}`}>
+                      {turn.checks.no_answer_leak ? <CheckCircle2 className="h-3.5 w-3.5" /> : <AlertCircle className="h-3.5 w-3.5" />} Không lộ đáp án
                     </span>
                   </div>
                 </div>

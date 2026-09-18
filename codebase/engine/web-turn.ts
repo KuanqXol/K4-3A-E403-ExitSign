@@ -40,8 +40,9 @@ export async function handleTurn(req: TurnRequest, onEvent?: (e: TurnEvent) => v
   }
 
   const session = getOrCreateSession(req.session_id, conceptId);
-  const conceptChanged = Boolean(req.concept_id && req.concept_id !== session.concept_id);
-  const activeConcept = action === "start" || conceptChanged ? conceptId : session.concept_id;
+  const isAnsweringPending = Boolean(session.pending && (action === "answer" || action === "ask_hint" || action === "retry" || action === "explain"));
+  const conceptChanged = !isAnsweringPending && Boolean(req.concept_id && req.concept_id !== session.concept_id);
+  const activeConcept = isAnsweringPending ? session.pending!.concept_id : (action === "start" || conceptChanged ? conceptId : session.concept_id);
   const pending = action === "start" || conceptChanged ? null : session.pending;
   const behavior = behaviorFor(session, action, responseMs);
 
