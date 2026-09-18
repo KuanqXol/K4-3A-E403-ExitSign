@@ -76,7 +76,7 @@ ${quote(message)}`;
 
 const ACTION_GUIDE: Record<Decision["action"], string> = {
   PREDICT_FIRST:
-    "PREDICT-FIRST question before teaching: a short scenario, 4 options; the learner guesses and explains why. message only sets up the scenario and must NOT teach the answer.",
+    "PREDICT-FIRST challenge: a short scenario with 4 options. If the learner asked a question, message MUST first clearly and concisely answer and explain their question (giải đáp thắc mắc của học viên), then pose the challenge scenario; otherwise message sets up the scenario. Never reveal the exact correct option text.",
   MISCONCEPTION_PROBE:
     "SPOT-THE-BUG: present the wrong claim (the given misconception or the learner's false premise) as a classmate's statement and ask where it is wrong; 3-4 options. Do not state the correction in message.",
   SOCRATIC_HINT:

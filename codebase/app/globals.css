@@ -18,6 +18,16 @@ body {
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Ẩn nút Next.js Turbopack Dev Indicator */
+nextjs-portal,
+#nextjs-dev-indicator,
+[data-nextjs-dev-indicator],
+[data-next-badge],
+div[data-nextjs-toast] {
+  display: none !important;
+}
+
 button,
 input {
   font: inherit;
