@@ -323,11 +323,14 @@ Unit test kỹ thuật gồm 27/27 ca kiểm thử tự động tại [codebase/
 | **Prompt Engineering & Tri thức Bài giảng** | **Đinh Đức Thái** | Prompt & Knowledge Engineer | - Prompt phân tích lượt học (Analyzer) và sinh câu hỏi (Generator) tại `prompts.ts`.<br>- Bản đồ tri thức concept map và trích dẫn mã đoạn transcript `knowledge.ts`, `content-analyzer.ts`.<br>- Cơ chế chống rò rỉ đáp án (`no_answer_leak`) và chống hallucination. |
 | **Giao diện Người dùng & Thử nghiệm Thực tế** | **Bùi Tùng Dương** | Frontend & User Researcher | - Giao diện bài giảng tương tác và Trợ lý Socratic tại [codebase/app/tutor/page.tsx](codebase/app/tutor/page.tsx) & `live-timeline.tsx`.<br>- Bộ dữ liệu khảo sát 15 sinh viên VinUni.<br>- Video demo thao tác CP3/CP5 và kịch bản kiểm thử với 2 willing users. |
 
-### Kế hoạch kiểm thử thực tế với Willing Users
+### Kế hoạch và kết quả kiểm thử thực tế với người dùng ngoài nhóm
 
-Nhóm đã làm việc và thống nhất lịch kiểm nghiệm thực tế với **02 học viên độc lập** ngoài nhóm (đã đăng ký từ đợt khảo sát CP1):
+Nhóm đã làm việc và kiểm nghiệm thực tế với **05 học viên độc lập** ngoài nhóm, trong đó có **02 willing users đã đăng ký từ CP1**:
 * **Willing User 1 (U1):** *Lâm Hoàng Phúc* (Nhân viên đã đi làm bên lĩnh vực công nghệ thông tin – đã có kiến thức nền tảng về lập trình, kỳ vọng học sâu về cơ chế Attention).
 * **Willing User 2 (U2):** *Hoàng Trung Hiếu* (Sinh viên vừa tốt nghiệp ngành Công nghệ thông tin – đang gap year 1 năm để trau dồi kiến thức về Applied Ai system).
+* **External User 3 (U3):** *Đàm Việt Hưng* (Sinh viên ngoài nhóm, chưa tham gia xây prototype).
+* **External User 4 (U4):** *Đỗ Thanh Tùng* (Sinh viên IT ngoài nhóm, tập trung kiểm thử guardrail và prompt injection).
+* **External User 5 (U5):** *Trần Khánh Linh* (Sinh viên ngoài nhóm, kiểm thử thao tác tương tác và câu hỏi mơ hồ).
 
 **Kế hoạch và kịch bản kiểm thử (3–5 phút / người học):**
 
@@ -344,6 +347,8 @@ Nhóm đã làm việc và thống nhất lịch kiểm nghiệm thực tế v�
 5. **Giai đoạn 5 – Phỏng vấn ngắn thu thập phản hồi:**
    - Đánh giá trên thang điểm 1–5 về: (1) Mức độ tập trung so với slide truyền thống; (2) Sự hữu ích của gợi ý Socratic; (3) Cảm giác tự tin nắm vững khái niệm sau khi hoàn thành slide.
 
+Nhật ký thử nghiệm đầy đủ được lưu tại [validation/user_testing_log.md](validation/user_testing_log.md), gồm đủ 5 người thử, nhiệm vụ giao, điểm tắc nghẽn, trích dẫn nguyên văn và quyết định xử lý của nhóm. Phản hồi lặp lại nhiều nhất là người thử cần nhãn hành động rõ hơn khi bắt đầu phần AI adaptive challenge. Nhóm đã điều chỉnh trực tiếp trong UI: phần "Thử thách Thích ứng" nói rõ nút sẽ tạo câu hỏi AI đầu tiên về Context Window, và nhãn nút đổi từ "Bắt đầu Thử thách Thích ứng" thành "Tạo câu hỏi AI đầu tiên".
+
 ---
 
 ## §9. Changelog
@@ -356,4 +361,4 @@ Nhóm đã làm việc và thống nhất lịch kiểm nghiệm thực tế v�
 | 17/09/2026 | Chốt quality bar 80%, 100% OOS/leak, đúng policy E/M/H, qua 4 Validator, không fallback | Tiêu chuẩn nghiệm thu do nhóm xác nhận trước khi chạy golden set |
 | 17/09/2026 | Đánh dấu các dữ kiện cần con người xác nhận bằng `CẦN BỔ SUNG` | Không suy đoán tên người, nguồn khảo sát hoặc kết quả eval |
 | 18/09/2026 | Cập nhật chính thức §7 và §8: công thức Quality Bar định lượng, liên kết `eval/`, bảng kết quả chạy thật (95%), tự khai báo các điểm chưa xử lý, bảng phân công 4 thành viên và kế hoạch kiểm thử thực tế với 2 willing users | Hoàn thiện tiêu chí nghiệm thu CP4 và đồng bộ tuyệt đối với mã nguồn hiện hành |
-
+| 18/09/2026 | Bổ sung `validation/user_testing_log.md` với 5 người dùng ngoài nhóm, gồm 2 willing users từ CP1; cập nhật UI nút adaptive challenge thành "Tạo câu hỏi AI đầu tiên" và mô tả rõ câu hỏi thuộc Context Window | Phản hồi thực tế cho thấy người thử ngập ngừng vì chưa biết nút bắt đầu tạo câu hỏi ở đâu; chỉnh copy giúp thao tác đầu tiên rõ hơn mà không đổi policy AI |

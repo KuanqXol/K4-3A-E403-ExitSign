@@ -683,14 +683,14 @@ export default function TutorPage() {
                     </div>
                     <h4 className="text-sm font-bold text-slate-900 mb-1">Thử thách Thích ứng Tự động</h4>
                     <p className="text-xs text-slate-600 max-w-lg mx-auto mb-4 leading-relaxed">
-                      Adaptive Engine tự động điều chỉnh độ khó câu hỏi dựa trên mức độ hiểu bài của bạn trong suốt phiên học.
+                      Bấm để tạo câu hỏi AI đầu tiên về Context Window. Sau mỗi đáp án, hệ thống sẽ điều chỉnh độ khó dựa trên mức độ hiểu bài của bạn.
                     </p>
                     <button
                       onClick={handleRequestAdaptiveQuestion}
                       disabled={loading}
                       className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-xs font-bold text-white hover:bg-indigo-700 shadow-sm transition disabled:opacity-50"
                     >
-                      <Sparkles className="h-4 w-4" /> Bắt đầu Thử thách Thích ứng
+                      <Sparkles className="h-4 w-4" /> Tạo câu hỏi AI đầu tiên
                     </button>
                   </div>
                 )}
