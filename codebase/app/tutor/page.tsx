@@ -408,7 +408,7 @@ export default function TutorPage() {
   const currentDiff = turn?.decision.difficulty ?? (currentMastery >= 70 ? "H" : currentMastery >= 35 ? "M" : "E");
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans" suppressHydrationWarning>
       {/* HEADER NỀN TRẮNG SÁNG */}
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-md px-6 py-3.5 shadow-xs">
         <div className="mx-auto flex max-w-[1700px] flex-wrap items-center justify-between gap-4">
