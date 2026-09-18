@@ -84,6 +84,8 @@ export type TurnInput = {
   learner_message?: string | null;
   selected_option?: number | null;
   pending_interaction?: PendingInteraction | null;
+  // Context of the slide currently viewed by the learner (e.g. from user testing U5)
+  slide_concept?: string | null;
 };
 
 export type Scope = "in_lesson" | "out_of_scope" | "ambiguous";

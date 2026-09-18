@@ -300,7 +300,7 @@ Báo cáo đầy đủ và chi tiết từng lượt chạy được tự độn
 | **Lượt 3** (`run-20260917T052125`) | 17/09/2026 05:21 | `gpt-4o-mini` | 20 | 19 | 95.0% | 2/2 (100%) | 3/3 (100%) | 0 ca (0%) | ✅ **ĐẠT** (tối ưu hóa prompt tiếng Anh nội bộ) |
 | **Lượt 4** (`run-20260917T053033`) | 17/09/2026 05:30 | `gpt-4o-mini` | 20 | 19 | 95.0% | 2/2 (100%) | 3/3 (100%) | 0 ca (0%) | ✅ **ĐẠT** (bổ sung chống lặp câu hỏi & streaming UI) |
 
-Unit test kỹ thuật gồm 27/27 ca kiểm thử tự động tại [codebase/engine/__tests__/engine.test.ts](codebase/engine/__tests__/engine.test.ts) đều chạy đạt 100%, bảo đảm tính toàn vẹn của logic cập nhật state, guard, validator, retry và streaming.
+Unit test kỹ thuật gồm 28/28 ca kiểm thử tự động tại [codebase/engine/__tests__/engine.test.ts](codebase/engine/__tests__/engine.test.ts) đều chạy đạt 100%, bảo đảm tính toàn vẹn của logic cập nhật state, guard, validator, retry, contextual slide grounding và streaming.
 
 ### Tự khai báo chức năng và trường hợp chưa kịp xử lý trong đợt này
 
@@ -347,7 +347,7 @@ Nhóm đã làm việc và kiểm nghiệm thực tế với **05 học viên đ
 5. **Giai đoạn 5 – Phỏng vấn ngắn thu thập phản hồi:**
    - Đánh giá trên thang điểm 1–5 về: (1) Mức độ tập trung so với slide truyền thống; (2) Sự hữu ích của gợi ý Socratic; (3) Cảm giác tự tin nắm vững khái niệm sau khi hoàn thành slide.
 
-Nhật ký thử nghiệm đầy đủ được lưu tại [validation/user_testing_log.md](validation/user_testing_log.md), gồm đủ 5 người thử, nhiệm vụ giao, điểm tắc nghẽn, trích dẫn nguyên văn và quyết định xử lý của nhóm. Phản hồi lặp lại nhiều nhất là người thử cần nhãn hành động rõ hơn khi bắt đầu phần AI adaptive challenge. Nhóm đã điều chỉnh trực tiếp trong UI: phần "Thử thách Thích ứng" nói rõ nút sẽ tạo câu hỏi AI đầu tiên về Context Window, và nhãn nút đổi từ "Bắt đầu Thử thách Thích ứng" thành "Tạo câu hỏi AI đầu tiên".
+Nhật ký thử nghiệm đầy đủ được lưu tại [validation/user_testing_log.md](validation/user_testing_log.md), gồm đủ 5 người thử, nhiệm vụ giao, điểm tắc nghẽn, trích dẫn nguyên văn và quyết định xử lý của nhóm. Từ các phản hồi thực tế, nhóm đã thực hiện 3 cải tiến cụ thể: (1) Đổi nhãn nút thành "Tạo câu hỏi AI đầu tiên" và mô tả rõ câu hỏi thuộc Context Window (U1); (2) Hiển thị Concept Badge (🏷️ Khái niệm) nổi bật trên khung AI để người học biết rõ phạm vi đang được hỏi (U2); (3) Triển khai tính năng Contextual Slide Grounding: tự động truyền mã concept của slide đang mở (`slide_concept`) vào pipeline AI, giúp AI tự nhận biết ngữ cảnh slide để giải thích trực diện khi học viên đặt câu hỏi ngắn/mơ hồ ("giải thích cái này") thay vì hỏi lại làm đứt quãng trải nghiệm học (U5).
 
 ---
 
@@ -361,4 +361,8 @@ Nhật ký thử nghiệm đầy đủ được lưu tại [validation/user_test
 | 17/09/2026 | Chốt quality bar 80%, 100% OOS/leak, đúng policy E/M/H, qua 4 Validator, không fallback | Tiêu chuẩn nghiệm thu do nhóm xác nhận trước khi chạy golden set |
 | 17/09/2026 | Đánh dấu các dữ kiện cần con người xác nhận bằng `CẦN BỔ SUNG` | Không suy đoán tên người, nguồn khảo sát hoặc kết quả eval |
 | 18/09/2026 | Cập nhật chính thức §7 và §8: công thức Quality Bar định lượng, liên kết `eval/`, bảng kết quả chạy thật (95%), tự khai báo các điểm chưa xử lý, bảng phân công 4 thành viên và kế hoạch kiểm thử thực tế với 2 willing users | Hoàn thiện tiêu chí nghiệm thu CP4 và đồng bộ tuyệt đối với mã nguồn hiện hành |
-| 18/09/2026 | Bổ sung `validation/user_testing_log.md` với 5 người dùng ngoài nhóm, gồm 2 willing users từ CP1; cập nhật UI nút adaptive challenge thành "Tạo câu hỏi AI đầu tiên" và mô tả rõ câu hỏi thuộc Context Window | Phản hồi thực tế cho thấy người thử ngập ngừng vì chưa biết nút bắt đầu tạo câu hỏi ở đâu; chỉnh copy giúp thao tác đầu tiên rõ hơn mà không đổi policy AI |
+| 18/09/2026 | Bổ sung `validation/user_testing_log.md` với 5 người dùng ngoài nhóm (2 willing users từ CP1); nâng cấp UI nút "Tạo câu hỏi AI đầu tiên" (U1), bổ sung Concept Badge trực quan (U2) và triển khai tính năng Contextual Slide Grounding (`slide_concept`) trong engine (U5) | Giải quyết triệt để phản hồi của người thử: làm rõ nhãn hành động bắt đầu, chỉ rõ phạm vi kiến thức và cho phép AI tự hiểu ngữ cảnh slide khi học viên hỏi vắn tắt ("giải thích cái này") mà không vi phạm các chốt an toàn |
+| 18/09/2026 | Bổ sung hộp phản hồi Đúng / Sai kèm văn bản giải thích sư phạm chi tiết cho tương tác Điền thuật ngữ (Slide 12: Self-Attention) | Khắc phục phản hồi của người học khi trước đó chỉ đổi màu viền input; giúp học viên nắm chắc bản chất cơ chế Attention loại bỏ điểm nghẽn tuần tự của RNN ngay khi bấm kiểm tra |
+| 18/09/2026 | Tái cấu trúc bố cục luồng sư phạm: Đưa khung "Trợ lý Socratic AI" (kèm hội thoại Bạn / AI, gợi ý Socratic và câu hỏi thích ứng) xuống hiển thị trực tiếp bên dưới phần Lý thuyết & Điền thuật ngữ trên Slide Canvas | Thống nhất luồng tiếp thu kiến thức 1 cột liền mạch (Lý thuyết $\rightarrow$ Tương tác $\rightarrow$ Dẫn dắt AI), loại bỏ sự phân tán thị giác khi phải liếc sang thanh bên (sidebar); tích hợp trạng thái chờ (Standby) và ô đặt câu hỏi nhanh trực tiếp dưới slide |
+| 18/09/2026 | Cập nhật và đồng bộ toàn bộ bộ test tự động lên 28/28 ca đạt 100% (bổ sung test case kiểm thử Contextual Slide Grounding trong `engine.test.ts`) | Đảm bảo logic gắn ngữ cảnh slide cho câu hỏi mơ hồ hoạt động chính xác và không gây hồi quy (regression) cho các ca kiểm thử Golden Set hiện hữu |
+

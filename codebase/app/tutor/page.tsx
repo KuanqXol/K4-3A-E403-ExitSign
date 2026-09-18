@@ -91,6 +91,8 @@ type SlideItem = {
     expected: string[];
     suffix: string;
     hint: string;
+    explanation?: string;
+    incorrectExplanation?: string;
   };
   spotBug?: {
     instruction: string;
@@ -138,6 +140,8 @@ const DAY1_SLIDES: SlideItem[] = [
       expected: ["attention", "self-attention", "tự chú ý"],
       suffix: " để nắm bắt ngữ cảnh xa.",
       hint: "Tên cơ chế trong bài báo 'Attention Is All You Need' (Google, 2017).",
+      explanation: "Cơ chế Self-Attention (tự chú ý) cho phép mô hình tính toán ma trận trọng số tương quan giữa mọi cặp từ đồng thời, loại bỏ hoàn toàn điểm nghẽn duyệt tuần tự của mạng RNN truyền thống.",
+      incorrectExplanation: "Thuật ngữ chính xác là: Attention (hoặc Self-Attention). Đây là cơ chế cốt lõi trong Transformer giúp mô hình cùng lúc chú ý đến tất cả các từ khác trong câu để hiểu trọn vẹn ngữ cảnh ngữ nghĩa.",
     },
   },
   {
@@ -267,6 +271,7 @@ export default function TutorPage() {
 
   // Lựa chọn đáp án câu hỏi thích ứng do AI sinh ra
   const [aiOptionSelected, setAiOptionSelected] = useState<number | null>(null);
+  const [lastUserQuestion, setLastUserQuestion] = useState<string | null>(null);
 
   const shownAt = useRef(Date.now());
   const currentSlide = DAY1_SLIDES[slideIndex];
@@ -300,6 +305,7 @@ export default function TutorPage() {
       ...payload,
       session_id: turn?.session_id,
       concept_id: targetConcept,
+      slide_concept: currentSlide.conceptId,
       response_time_ms: Date.now() - shownAt.current,
     };
     setLoading(true);
@@ -351,6 +357,7 @@ export default function TutorPage() {
     const val = fillValue.trim().toLowerCase();
     const isCorrect = currentSlide.fillBlank?.expected.some((exp) => val.includes(exp.toLowerCase()));
     setFillStatus(isCorrect ? "correct" : "incorrect");
+    setLastUserQuestion(`Điền từ khuyết: "${fillValue}" (kết quả: ${isCorrect ? "Đúng ✅" : "Chưa đúng ❌"})`);
 
     send({
       action: "explain",
@@ -640,6 +647,35 @@ export default function TutorPage() {
                         💡 {currentSlide.fillBlank.hint}
                       </p>
                     )}
+
+                    {/* HỘP THÔNG BÁO KẾT QUẢ ĐÚNG / SAI VÀ GIẢI THÍCH CHI TIẾT */}
+                    {fillStatus === "correct" && (
+                      <div className="mt-3 rounded-xl border border-emerald-300 bg-emerald-50 p-3.5 text-xs text-emerald-950 flex items-start gap-2.5 shadow-xs animate-in fade-in">
+                        <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
+                        <div>
+                          <strong className="text-emerald-800 block mb-0.5 font-bold text-xs">
+                            ✅ Chính xác tuyệt đối!
+                          </strong>
+                          <p className="leading-relaxed font-medium text-emerald-900">
+                            {currentSlide.fillBlank.explanation}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {fillStatus === "incorrect" && (
+                      <div className="mt-3 rounded-xl border border-rose-300 bg-rose-50 p-3.5 text-xs text-rose-950 flex items-start gap-2.5 shadow-xs animate-in fade-in">
+                        <AlertCircle className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" />
+                        <div>
+                          <strong className="text-rose-800 block mb-0.5 font-bold text-xs">
+                            ❌ Chưa chính xác rồi!
+                          </strong>
+                          <p className="leading-relaxed font-medium text-rose-900">
+                            {currentSlide.fillBlank.incorrectExplanation}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -696,6 +732,184 @@ export default function TutorPage() {
                 )}
               </div>
 
+              {/* 4. PHẢN HỒI VÀ DẪN DẮT CỦA TRỢ LÝ SOCRATIC AI (NGAY DƯỚI LÝ THUYẾT & TƯƠNG TÁC SLIDE) */}
+              <div className="mt-6 rounded-2xl border-2 border-indigo-200 bg-gradient-to-b from-indigo-50/40 via-white to-white p-5 sm:p-6 shadow-sm animate-in fade-in">
+                <div className="flex items-center justify-between border-b border-indigo-100 pb-3 mb-4 flex-wrap gap-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-200">
+                      <Sparkles className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                        Trợ lý Socratic AI
+                        <span className="rounded-md bg-indigo-100 px-2 py-0.5 text-[11px] font-bold text-indigo-700">
+                          🏷️ {CONCEPT_TITLES[turn?.decision?.concept_id ?? currentSlide.conceptId] ?? currentSlide.title}
+                        </span>
+                      </h3>
+                      <p className="text-[11px] text-slate-500 font-medium">Đồng hành & gợi mở theo thời gian thực</p>
+                    </div>
+                  </div>
+                  {loading && (
+                    <span className="inline-flex items-center gap-1.5 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-3 py-1 font-mono font-bold animate-pulse">
+                      <Sparkles className="h-3.5 w-3.5 animate-spin" /> Đang sinh phản hồi... ({(elapsed / 1000).toFixed(1)}s)
+                    </span>
+                  )}
+                </div>
+
+                <div className="space-y-3.5">
+                  {/* Trạng thái ban đầu khi chưa có câu hỏi */}
+                  {!lastUserQuestion && !it && !loading && (
+                    <div className="rounded-xl border border-dashed border-indigo-200 bg-indigo-50/30 p-4 text-center">
+                      <p className="text-xs text-indigo-900/80 font-medium leading-relaxed">
+                        💡 Sau khi đọc phần lý thuyết và hoàn thành điền thuật ngữ ở trên, bạn có thể gửi câu hỏi bên dưới hoặc ở khung bên phải (ví dụ: &quot;attention ở đây là gì&quot;, &quot;giải thích cái này&quot;) — Trợ lý Socratic AI sẽ phản hồi và dẫn dắt gợi mở ngay tại đây!
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Câu hỏi của người học */}
+                  {lastUserQuestion && (
+                    <div className="rounded-xl border border-indigo-200/80 bg-indigo-50/70 p-3.5 text-xs text-indigo-950 flex items-start gap-2.5 shadow-2xs">
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-white font-bold text-[10px]">
+                        Bạn
+                      </div>
+                      <div className="flex-1">
+                        <span className="font-bold text-indigo-900 block mb-0.5 text-[10px] uppercase tracking-wider">
+                          Câu hỏi của bạn:
+                        </span>
+                        <p className="text-slate-800 font-medium leading-relaxed text-sm">{lastUserQuestion}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Trạng thái đang tải */}
+                  {loading && !it && (
+                    <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-4 text-xs text-amber-950 flex items-center gap-3 animate-pulse">
+                      <Sparkles className="h-4 w-4 text-amber-600 animate-spin shrink-0" />
+                      <span className="font-medium">
+                        Trợ lý AI đang đọc slide và sinh phản hồi dẫn dắt cho bạn...
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Lời giải thích / phản hồi của AI */}
+                  {it && (
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 text-xs text-slate-800 leading-relaxed shadow-2xs">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white font-bold text-[10px]">
+                          AI
+                        </div>
+                        <span className="font-bold text-slate-900 text-xs">Phản hồi từ Trợ lý Socratic AI:</span>
+                      </div>
+                      <p className="text-slate-800 leading-relaxed pl-8 font-medium text-sm">{it.message}</p>
+                    </div>
+                  )}
+
+                  {/* Gợi ý Socratic nếu có */}
+                  {it?.hint && (
+                    <div className="flex items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50/90 p-3.5 text-xs text-amber-950">
+                      <Lightbulb className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
+                      <div>
+                        <strong className="block font-bold mb-0.5 text-amber-900">💡 Gợi ý Socratic (không lộ đáp án):</strong>
+                        <span className="leading-relaxed font-medium">{it.hint}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* CÂU HỎI THÍCH ỨNG TRẢ RA NẾU CÓ */}
+                  {it?.question && (
+                    <div className="rounded-2xl border-2 border-indigo-300 bg-white p-5 shadow-sm">
+                      <div className="flex items-center justify-between mb-3 flex-wrap gap-1">
+                        <div className="flex items-center gap-2">
+                          <span className="rounded-md bg-indigo-600 text-white px-2.5 py-0.5 text-xs font-bold shadow-xs">
+                            Thử thách Thích ứng
+                          </span>
+                          <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-bold text-slate-700">
+                            Mức: {turn?.decision?.difficulty ?? "E"}
+                          </span>
+                        </div>
+                        {turn?.graded !== null && (
+                          <span className={`text-xs font-bold px-2.5 py-1 rounded-md ${
+                            turn?.graded ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"
+                          }`}>
+                            {turn?.graded ? "✅ Chính xác!" : "❌ Chưa chính xác"}
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-sm font-bold text-slate-900 leading-relaxed mb-4">
+                        {it.question}
+                      </p>
+
+                      {/* Các lựa chọn trắc nghiệm nếu có */}
+                      {it.options && it.options.length > 0 && (
+                        <div className="space-y-2 mb-3">
+                          {it.options.map((opt, idx) => (
+                            <button
+                              key={idx}
+                              disabled={loading}
+                              onClick={() => handleAnswerAiQuestion(idx, opt)}
+                              className={`w-full flex items-center gap-3 rounded-xl border p-3 text-left text-xs font-medium transition ${
+                                aiOptionSelected === idx
+                                  ? "border-indigo-600 bg-indigo-600 text-white font-bold shadow-sm"
+                                  : "border-slate-200 bg-slate-50 text-slate-800 hover:border-indigo-400 hover:bg-white shadow-2xs"
+                              }`}
+                            >
+                              <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg font-mono font-bold text-xs ${
+                                aiOptionSelected === idx ? "bg-white/20 text-white" : "bg-indigo-100 text-indigo-700"
+                              }`}>
+                                {String.fromCharCode(65 + idx)}
+                              </span>
+                              <span className="text-sm">{opt}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between border-t border-slate-100 pt-2.5 text-xs">
+                        <button
+                          onClick={handleAskHint}
+                          disabled={loading}
+                          className="inline-flex items-center gap-1.5 font-semibold text-amber-700 hover:text-amber-800"
+                        >
+                          <HelpCircle className="h-4 w-4" /> Xin gợi ý Socratic (không lộ đáp án)
+                        </button>
+                        <span className="text-slate-400 text-xs font-medium">Tự động thích ứng</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Ô gõ câu hỏi nhanh trực tiếp ngay dưới phần phản hồi */}
+                  <div className="mt-4 pt-3 border-t border-indigo-100 flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={text}
+                      onChange={(e) => setText(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && text.trim() && !loading) {
+                          setLastUserQuestion(text.trim());
+                          send({ action: "ask", message: text.trim() });
+                          setText("");
+                        }
+                      }}
+                      placeholder="Đặt câu hỏi tiếp cho AI về slide này..."
+                      className="flex-1 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-800 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-hidden shadow-2xs"
+                    />
+                    <button
+                      onClick={() => {
+                        if (!text.trim() || loading) return;
+                        setLastUserQuestion(text.trim());
+                        send({ action: "ask", message: text.trim() });
+                        setText("");
+                      }}
+                      disabled={!text.trim() || loading}
+                      className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-700 disabled:opacity-40 transition shadow-xs"
+                    >
+                      <Send className="h-3.5 w-3.5" /> Gửi
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               {/* Chân slide */}
               <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4 text-xs text-slate-400 font-medium">
                 <span>VLearn Interactive Presentation · Hackathon AI Batch 04</span>
@@ -704,9 +918,9 @@ export default function TutorPage() {
             </div>
           </div>
 
-          {/* CỘT PHẢI (4 Cột): TRỢ LÝ SOCRATIC AI ĐỒNG HÀNH & VALIDATOR (GỌN GÀNG, KHÔNG RƯỜM RÀ) */}
+          {/* CỘT PHẢI (4 Cột): HỘP GÕ CÂU HỎI & CHỐT AN TOÀN VALIDATOR */}
           <div className="space-y-6 lg:col-span-4">
-            {/* THẺ 1: TRỢ LÝ SOCRATIC AI ĐỒNG HÀNH */}
+            {/* THẺ 1: HỘP ĐẶT CÂU HỎI CHO AI */}
             <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2">
@@ -714,108 +928,35 @@ export default function TutorPage() {
                     <Sparkles className="h-4 w-4" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-sm">Trợ lý Socratic AI</h3>
-                    <p className="text-[11px] text-slate-500">Đồng hành & gợi mở theo thời gian thực</p>
+                    <h3 className="font-bold text-slate-900 text-sm">Hỏi Trợ lý Socratic</h3>
+                    <p className="text-[11px] text-slate-500">Phản biện, đào sâu hoặc hỏi thêm về slide</p>
                   </div>
                 </div>
-                {loading && (
-                  <span className="text-xs text-amber-600 font-mono animate-pulse font-bold">
-                    {(elapsed / 1000).toFixed(1)}s
-                  </span>
-                )}
-              </div>
-
-              <div className="mt-4 space-y-3">
-                {it ? (
-                  <>
-                    <div className="rounded-2xl border border-indigo-100 bg-indigo-50/60 p-4 text-xs text-indigo-950 leading-relaxed">
-                      <span className="font-bold text-indigo-700 block mb-1">Dẫn dắt của Tutor:</span>
-                      {it.message}
-                    </div>
-
-                    {it.hint && (
-                      <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
-                        <Lightbulb className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
-                        <span>{it.hint}</span>
-                      </div>
-                    )}
-
-                    {/* CÂU HỎI THÍCH ỨNG TRẢ RA NẾU CÓ */}
-                    {it.question && (
-                      <div className="rounded-2xl border-2 border-indigo-300 bg-white p-4 shadow-sm">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="rounded-md bg-indigo-50 px-2 py-0.5 text-[11px] font-bold text-indigo-700 border border-indigo-200">
-                            Câu hỏi Thử thách
-                          </span>
-                          {turn?.graded !== null && (
-                            <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
-                              turn?.graded ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"
-                            }`}>
-                              {turn?.graded ? "✅ Chính xác!" : "❌ Chưa chính xác"}
-                            </span>
-                          )}
-                        </div>
-
-                        <p className="text-xs font-bold text-slate-900 leading-relaxed mb-3">
-                          {it.question}
-                        </p>
-
-                        {/* Các lựa chọn trắc nghiệm nếu có */}
-                        {it.options && it.options.length > 0 && (
-                          <div className="space-y-1.5 mb-3">
-                            {it.options.map((opt, idx) => (
-                              <button
-                                key={idx}
-                                disabled={loading}
-                                onClick={() => handleAnswerAiQuestion(idx, opt)}
-                                className={`w-full flex items-center gap-2.5 rounded-xl border p-2.5 text-left text-xs font-medium transition ${
-                                  aiOptionSelected === idx
-                                    ? "border-indigo-600 bg-indigo-600 text-white font-bold"
-                                    : "border-slate-200 bg-slate-50 text-slate-800 hover:border-indigo-400 hover:bg-white shadow-2xs"
-                                }`}
-                              >
-                                <span className={`font-mono font-bold ${aiOptionSelected === idx ? "text-white" : "text-indigo-600"}`}>
-                                  {String.fromCharCode(65 + idx)}.
-                                </span>
-                                <span>{opt}</span>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-
-                        <div className="flex items-center justify-between border-t border-slate-100 pt-2 text-[11px]">
-                          <button
-                            onClick={handleAskHint}
-                            disabled={loading}
-                            className="inline-flex items-center gap-1 font-semibold text-amber-700 hover:text-amber-800"
-                          >
-                            <HelpCircle className="h-3.5 w-3.5" /> Xin gợi ý Socratic (không lộ đáp án)
-                          </button>
-                          <span className="text-slate-400">Tự động thích ứng</span>
-                        </div>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 text-center text-xs text-slate-500">
-                    Đọc nội dung bài giảng hoặc thực hiện tương tác trên slide để nhận dẫn dắt sư phạm từ AI.
-                  </div>
-                )}
               </div>
 
               {/* Hộp gõ câu hỏi phản biện / hỏi thêm */}
-              <div className="mt-4 border-t border-slate-100 pt-3">
+              <div className="mt-4">
+                <div className="flex items-center justify-between mb-2 text-[11px]">
+                  <span className="flex items-center gap-1 font-semibold text-indigo-700 bg-indigo-50/70 border border-indigo-100 px-2 py-0.5 rounded-md">
+                    <span>📌</span> Ngữ cảnh: Slide {currentSlide.slideNumber} — {CONCEPT_TITLES[currentSlide.conceptId] ?? currentSlide.title}
+                  </span>
+                </div>
                 <textarea
                   value={text}
                   onChange={(e) => setText(e.target.value)}
-                  rows={2}
-                  placeholder="Hỏi AI về slide này hoặc gõ câu trả lời/phản biện..."
-                  className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-hidden shadow-2xs"
+                  rows={3}
+                  placeholder="Gõ câu hỏi của bạn về slide này (ví dụ: attention ở đây là gì, giải thích cái này)..."
+                  className="w-full rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-800 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-hidden shadow-2xs leading-relaxed"
                 />
                 <button
-                  onClick={() => send({ action: "ask", message: text })}
+                  onClick={() => {
+                    if (!text.trim() || loading) return;
+                    setLastUserQuestion(text.trim());
+                    send({ action: "ask", message: text.trim() });
+                    setText("");
+                  }}
                   disabled={!text.trim() || loading}
-                  className="mt-2 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 py-2 text-xs font-bold text-white hover:bg-indigo-700 disabled:opacity-40 transition shadow-xs"
+                  className="mt-2.5 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 py-2.5 text-xs font-bold text-white hover:bg-indigo-700 disabled:opacity-40 transition shadow-xs"
                 >
                   <Send className="h-3.5 w-3.5" /> Gửi câu hỏi cho AI
                 </button>

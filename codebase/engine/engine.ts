@@ -163,13 +163,28 @@ async function analyze(input: TurnInput, deps: EngineDeps, logger: LlmCallLogger
       guess,
     );
     const withGrade = graded === null ? analysis : { ...analysis, intent: "answer_attempt" as const, is_correct: graded };
+
+    // Phản hồi kiểm thử thực tế (U5): Nếu học viên hỏi cộc lốc/mơ hồ ("giải thích cái này", "chỗ này là sao")
+    // nhưng đang mở một slide có concept cụ thể (slide_concept), tự động bám ngữ cảnh slide đó để giải thích.
+    if (withGrade.scope === "ambiguous" && input.slide_concept && findConcept(deps.knowledge, input.slide_concept)) {
+      return {
+        ...withGrade,
+        scope: "in_lesson",
+        intent: "ask_concept",
+        concept_id: input.slide_concept,
+        reason: `${withGrade.reason ? withGrade.reason + "; " : ""}tự động gắn ngữ cảnh slide đang xem: ${input.slide_concept} [feedback U5]`,
+      };
+    }
+
     const concept_id = withGrade.concept_id ?? (withGrade.scope === "in_lesson" ? pendingConcept : null);
     return { ...withGrade, concept_id };
   } catch (err) {
     const reason = `Analyzer lỗi (${err instanceof Error ? err.message : err}); dùng từ khoá`;
-    return guess
-      ? ruleAnalysis({ intent: "ask_concept", concept_id: guess, reason })
-      : ruleAnalysis({ scope: "ambiguous", intent: "none", reason });
+    if (guess) return ruleAnalysis({ intent: "ask_concept", concept_id: guess, reason });
+    if (input.slide_concept && findConcept(deps.knowledge, input.slide_concept)) {
+      return ruleAnalysis({ intent: "ask_concept", concept_id: input.slide_concept, reason: `${reason}; gắn slide context` });
+    }
+    return ruleAnalysis({ scope: "ambiguous", intent: "none", reason });
   }
 }
 

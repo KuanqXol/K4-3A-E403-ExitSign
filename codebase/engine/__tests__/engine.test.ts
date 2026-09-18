@@ -263,6 +263,27 @@ describe("runTurn (pipeline đầy đủ với LLM giả)", () => {
     assert.equal(out.analysis.source, "rule");
     assert.equal(out.decision.concept_id, "context_window");
   });
+
+  it("câu mơ hồ kèm slide_concept → tự động gắn ngữ cảnh slide đang mở (feedback U5)", async () => {
+    const llm = new ScriptedLlm({
+      analyze: [{ scope: "ambiguous", intent: "none", concept_id: null, reason: "too vague" }],
+      generate: [{ ...goodPredict, concept_id: "temperature_sampling", source_refs: ["T04-071"] }],
+    });
+    const out = await runTurn(
+      {
+        concept_id: "temperature_sampling",
+        slide_concept: "temperature_sampling",
+        learner_state: emptyState(),
+        recent_behavior: { learner_action: "ask" },
+        learner_message: "giải thích cái này",
+      },
+      { llm, knowledge: DAY01_KNOWLEDGE, logDir, turnId: "t-slide-ctx" },
+    );
+    assert.equal(out.analysis.scope, "in_lesson");
+    assert.equal(out.analysis.concept_id, "temperature_sampling");
+    assert.equal(out.decision.concept_id, "temperature_sampling");
+    assert.equal(out.decision.action, "PREDICT_FIRST");
+  });
 });
 
 describe("normalizeAnalysis (sửa theo phân tích lượt 1)", () => {

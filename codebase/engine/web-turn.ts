@@ -15,6 +15,7 @@ export type TurnRequest = {
   message?: string;
   selected_option?: number;
   response_time_ms?: number;
+  slide_concept?: string;
 };
 
 export type TurnResult = { status: number; body: { success: boolean; data: unknown; error: string | null } };
@@ -55,6 +56,7 @@ export async function handleTurn(req: TurnRequest, onEvent?: (e: TurnEvent) => v
         learner_message: message || null,
         selected_option: selected,
         pending_interaction: pending,
+        slide_concept: typeof req.slide_concept === "string" ? req.slide_concept : null,
       },
       { llm, knowledge: DAY01_KNOWLEDGE, onEvent },
     );
